@@ -1,2 +1,2 @@
 # task-list-spring-boot-app
-My home prctice repo
+My home practice repo
