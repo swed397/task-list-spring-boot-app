@@ -8,3 +8,7 @@ spring:
     change-log: classpath:db/changelog/db.changelog.yaml
     enabled: true
     default-schema: public
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
