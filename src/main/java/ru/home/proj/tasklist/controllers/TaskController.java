@@ -33,19 +33,19 @@ public class TaskController {
 
     @GetMapping("{id}")
     public TaskDto getById(@PathVariable Long id) {
-        Task task = taskService.getById(id);
+        Task task = taskService.get(id);
 
         return taskMapper.toDto(task);
     }
 
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable Long id) {
-        taskService.delete(id);
+        taskService.deleteById(id);
     }
 
     @GetMapping("/{id}/tasks")
     public List<TaskDto> getAllTasksByUserId(@PathVariable Long id) {
-        List<Task> taskList = taskService.getAllByUserId(Long id);
+        List<Task> taskList = taskService.findAllByUserId(id);
 
         return taskList.stream().map(taskMapper::toDto).collect(Collectors.toList());
     }
@@ -54,8 +54,10 @@ public class TaskController {
     public TaskDto createTask(@PathVariable Long userId, @Validated(OnUpdate.class) TaskDto dto) {
 
         Task task = taskMapper.toEntity(dto);
-        Task createdTask = taskService.save(task, userId);
 
-        return taskMapper.toDto(createdTask);
+//        Task createdTask = taskService.save(task, userId);
+
+//        return taskMapper.toDto(createdTask);
+        return null;
     }
 }

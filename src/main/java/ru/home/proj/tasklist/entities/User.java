@@ -24,6 +24,20 @@ public class User {
 
     @Transient
     private String passwordConfirm;
-//    private Set<Role> rolesSet;
-//    private List<Task> taskList;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<Role> rolesSet;
+
+    @ManyToMany
+    @JoinTable(
+            name = "users_tasks",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<Task> taskSet;
 }
