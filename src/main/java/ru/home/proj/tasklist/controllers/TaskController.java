@@ -1,14 +1,12 @@
 package ru.home.proj.tasklist.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.home.proj.tasklist.dtos.TaskDto;
 import ru.home.proj.tasklist.entities.Task;
 import ru.home.proj.tasklist.mappers.TaskMapper;
 import ru.home.proj.tasklist.services.TaskService;
-import ru.home.proj.tasklist.services.UserService;
 import ru.home.proj.tasklist.utils.validations.OnUpdate;
 
 import java.util.List;
