@@ -48,7 +48,7 @@ public class TaskController {
         return taskList.stream().map(taskMapper::toDto).collect(Collectors.toList());
     }
 
-    @PostMapping("/{id}/tasks")
+    @PostMapping("/{userId}/tasks")
     public TaskDto createTask(@PathVariable Long userId, @Validated(OnUpdate.class) TaskDto dto) {
 
         Task task = taskMapper.toEntity(dto);
