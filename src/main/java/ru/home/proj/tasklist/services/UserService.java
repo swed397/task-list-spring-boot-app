@@ -6,4 +6,6 @@ import ru.home.proj.tasklist.utils.Crud;
 public interface UserService extends Crud<User> {
 
     void deleteById(Long id);
+
+    User findByUserName(String username);
 }

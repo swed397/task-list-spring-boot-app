@@ -10,4 +10,6 @@ public interface TaskService extends Crud<Task> {
     void deleteById(Long id);
 
     List<Task> findAllByUserId(Long id);
+
+    Task saveWithUserId(Task task, Long userId);
 }

@@ -23,7 +23,7 @@ public class TaskDto {
     private Long id;
 
     @NotBlank(message = "Title must be not null", groups = {OnCreate.class, OnUpdate.class})
-    private Long title;
+    private String title;
     private String description;
     private Status status;
 

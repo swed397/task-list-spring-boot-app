@@ -52,10 +52,8 @@ public class TaskController {
     public TaskDto createTask(@PathVariable Long userId, @Validated(OnUpdate.class) TaskDto dto) {
 
         Task task = taskMapper.toEntity(dto);
+        Task createdTask = taskService.saveWithUserId(task, userId);
 
-//        Task createdTask = taskService.save(task, userId);
-
-//        return taskMapper.toDto(createdTask);
-        return null;
+        return taskMapper.toDto(createdTask);
     }
 }

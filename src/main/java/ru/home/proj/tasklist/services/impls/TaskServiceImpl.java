@@ -1,23 +1,21 @@
 package ru.home.proj.tasklist.services.impls;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.home.proj.tasklist.entities.Task;
 import ru.home.proj.tasklist.repos.TaskRepository;
 import ru.home.proj.tasklist.services.TaskService;
+import ru.home.proj.tasklist.services.UserService;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
+@AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-
-
-    @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
+    private final UserService userService;
 
     @Override
     public Task save(Task entity) {
@@ -42,5 +40,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> findAllByUserId(Long id) {
         return List.of();
+    }
+
+    @Override
+    public Task saveWithUserId(Task task, Long userId) {
+        task.setUserSet(Set.of(userService.get(userId)));
+
+        return taskRepository.save(task);
     }
 }
