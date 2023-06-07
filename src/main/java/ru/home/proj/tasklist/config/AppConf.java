@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.home.proj.tasklist.config.security.JwtTokenFilter;
 import ru.home.proj.tasklist.config.security.JwtTokenProvider;
 
 @Configuration
@@ -22,7 +23,6 @@ import ru.home.proj.tasklist.config.security.JwtTokenProvider;
 @RequiredArgsConstructor
 public class AppConf {
 
-    private final ApplicationContext appContext;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean

@@ -12,3 +12,9 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: false
+
+security:
+  jwt:
+    secret: bXkgand0IHRva2VuIG5ldmVyIGRlY29kZQ==
+    access: 3600000
+    refresh: 2592000000
