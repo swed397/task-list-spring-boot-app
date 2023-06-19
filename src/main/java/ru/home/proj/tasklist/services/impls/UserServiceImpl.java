@@ -12,7 +12,6 @@ import ru.home.proj.tasklist.repos.UserRepository;
 import ru.home.proj.tasklist.services.RoleService;
 import ru.home.proj.tasklist.services.UserService;
 
-import java.util.Collection;
 import java.util.Set;
 
 @Service

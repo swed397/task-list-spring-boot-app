@@ -2,13 +2,11 @@ package ru.home.proj.tasklist.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.home.proj.tasklist.config.security.JwtEntity;
 import ru.home.proj.tasklist.config.security.JwtTokenProvider;
 import ru.home.proj.tasklist.dtos.UserDto;
 import ru.home.proj.tasklist.dtos.auth.JwtRequest;
