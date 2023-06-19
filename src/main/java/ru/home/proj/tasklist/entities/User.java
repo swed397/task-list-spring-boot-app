@@ -4,11 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(schema = "public", name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,19 +27,23 @@ public class User {
     @Transient
     private String passwordConfirm;
 
+    //ToDo Посмотреть другие решения
+//    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
     @ManyToMany
     @JoinTable(
             name = "user_roles",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> rolesSet;
+//    ToDo always null?????
+    private Set<Role> rolesSet = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
             name = "users_tasks",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id")
     )
-    private Set<Task> taskSet;
+    private Set<Task> taskSet = new HashSet<>();
 }

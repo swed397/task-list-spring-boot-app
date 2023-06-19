@@ -11,10 +11,19 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    open-in-view: false
+    open-in-view: true
+#    Debug
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
 security:
   jwt:
     secret: bXkgand0IHRva2VuIG5ldmVyIGRlY29kZQ==
     access: 3600000
     refresh: 2592000000
+
+server:
+  servlet:
+    context-path: /api/v1

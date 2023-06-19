@@ -1,6 +1,7 @@
 package ru.home.proj.tasklist.config.security;
 
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 import ru.home.proj.tasklist.exceptions.ResourceNotFoundExcept;
+
+import java.io.IOException;
 
 @AllArgsConstructor
 @Slf4j
@@ -35,6 +38,12 @@ public class JwtTokenFilter extends GenericFilterBean {
             } catch (ResourceNotFoundExcept resourceNotFoundExcept) {
                 logger.warn("User tried to logon");
             }
+        }
+
+        try {
+            filterChain.doFilter(servletRequest, servletResponse);
+        } catch (IOException | ServletException e) {
+            throw new RuntimeException(e);
         }
     }
 }

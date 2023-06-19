@@ -12,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-import ru.home.proj.tasklist.dtos.auth.JwtResponse;
 import ru.home.proj.tasklist.entities.Role;
-import ru.home.proj.tasklist.entities.User;
-import ru.home.proj.tasklist.exceptions.AccessDeniedExcept;
 import ru.home.proj.tasklist.properties.JwtProperties;
 import ru.home.proj.tasklist.services.UserService;
 
@@ -70,24 +67,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public JwtResponse refreshUserTokens(String refreshToken) {
-        JwtResponse jwtResponse = new JwtResponse();
-
-        if (!validateToken(refreshToken)) {
-            throw new AccessDeniedExcept("No access");
-        }
-
-        Long userId = Long.valueOf(getIdFromToken(refreshToken));
-        User user = userService.get(userId);
-
-        jwtResponse.setId(userId);
-        jwtResponse.setUsername(user.getUsername());
-        jwtResponse.setAccessToken(createAccessToken(userId, user.getUsername(), user.getRolesSet()));
-        jwtResponse.setRefreshToken(createRefreshToken(userId, user.getUsername()));
-
-        return jwtResponse;
-    }
-
     public Authentication getAuthentication(String token) {
         String username = getUserNameFromToken(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -95,7 +74,7 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    private String getIdFromToken(String token) {
+    public String getIdFromToken(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(key)
@@ -105,7 +84,7 @@ public class JwtTokenProvider {
                 .get("id").toString();
     }
 
-    private String getUserNameFromToken(String token) {
+    public String getUserNameFromToken(String token) {
         return Jwts
                 .parserBuilder()
                 .setSigningKey(key)

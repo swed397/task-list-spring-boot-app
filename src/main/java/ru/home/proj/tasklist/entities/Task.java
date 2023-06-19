@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,11 +27,6 @@ public class Task {
     private Status status;
     private LocalDateTime expirationDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "users_tasks",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id")
-    )
-    private Set<User> userSet;
+    @ManyToMany(mappedBy = "taskSet")
+    private Set<User> userSet = new HashSet<>();
 }

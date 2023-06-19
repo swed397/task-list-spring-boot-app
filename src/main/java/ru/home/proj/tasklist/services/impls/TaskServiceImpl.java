@@ -2,13 +2,16 @@ package ru.home.proj.tasklist.services.impls;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.home.proj.tasklist.entities.Task;
+import ru.home.proj.tasklist.enums.StatusEnum;
+import ru.home.proj.tasklist.exceptions.ResourceNotFoundExcept;
 import ru.home.proj.tasklist.repos.TaskRepository;
+import ru.home.proj.tasklist.services.StatusService;
 import ru.home.proj.tasklist.services.TaskService;
 import ru.home.proj.tasklist.services.UserService;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -16,35 +19,50 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final UserService userService;
+    private final StatusService statusService;
 
     @Override
+    @Transactional
     public Task save(Task entity) {
+        if (entity.getStatus() == null) {
+            entity.setStatus(statusService.findStatusByName(StatusEnum.TO_DO.getName()));
+        }
+
         return taskRepository.save(entity);
     }
 
     @Override
+    @Transactional
     public void delete(Task entity) {
         taskRepository.delete(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Task get(Long id) {
-        return taskRepository.findById(id).orElse(null);
+        return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundExcept("User not found"));
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
     }
 
     @Override
-    public List<Task> findAllByUserId(Long id) {
-        return List.of();
+    @Transactional(readOnly = true)
+    public List<Task> findAllByUserId(Long userId) {
+        return taskRepository.findAllByUserId(userId);
     }
 
     @Override
+    @Transactional
     public Task saveWithUserId(Task task, Long userId) {
-        task.setUserSet(Set.of(userService.get(userId)));
+        if (task.getStatus() == null) {
+            task.setStatus(statusService.findStatusByName(StatusEnum.TO_DO.getName()));
+        }
+
+        task.getUserSet().add(userService.get(userId));
 
         return taskRepository.save(task);
     }

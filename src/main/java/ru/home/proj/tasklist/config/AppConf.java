@@ -1,8 +1,10 @@
 package ru.home.proj.tasklist.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -14,12 +16,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.home.proj.tasklist.config.security.JwtTokenFilter;
 import ru.home.proj.tasklist.config.security.JwtTokenProvider;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@EnableTransactionManagement
+@RequiredArgsConstructor(onConstructor = @__(@Lazy))
+@Slf4j
 public class AppConf {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -45,6 +50,8 @@ public class AppConf {
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
                     httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(
                             (request, response, authException) -> {
+                                log.error(authException.toString());
+
                                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                                 response.getWriter().write("UNAUTHORIZED");
                             });
@@ -56,7 +63,7 @@ public class AppConf {
                     );
                 })
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("api/v1/auth/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/auth/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
                 .anonymous(AbstractHttpConfigurer::disable)

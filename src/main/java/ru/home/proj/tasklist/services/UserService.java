@@ -8,4 +8,6 @@ public interface UserService extends Crud<User> {
     void deleteById(Long id);
 
     User findByUserName(String username);
+
+    User registerNewUser(User user);
 }

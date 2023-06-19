@@ -1,0 +1,8 @@
+POST http://localhost:8080/tasks/{{id}}/tasks
+Content-Type: application/json
+
+{
+  "id": null,
+  "title": "TEST",
+  "description": ""
+}
