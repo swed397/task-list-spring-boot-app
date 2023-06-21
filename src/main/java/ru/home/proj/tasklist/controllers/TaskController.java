@@ -7,6 +7,7 @@ import ru.home.proj.tasklist.dtos.TaskDto;
 import ru.home.proj.tasklist.entities.Task;
 import ru.home.proj.tasklist.mappers.TaskMapper;
 import ru.home.proj.tasklist.services.TaskService;
+import ru.home.proj.tasklist.utils.validations.OnCreate;
 import ru.home.proj.tasklist.utils.validations.OnUpdate;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class TaskController {
     }
 
     @PostMapping("/{userId}/tasks")
-    public TaskDto createTask(@PathVariable Long userId, @Validated(OnUpdate.class) TaskDto dto) {
+    public TaskDto createTask(@PathVariable Long userId, @Validated(OnCreate.class) TaskDto dto) {
 
         Task task = taskMapper.toEntity(dto);
         Task createdTask = taskService.saveWithUserId(task, userId);

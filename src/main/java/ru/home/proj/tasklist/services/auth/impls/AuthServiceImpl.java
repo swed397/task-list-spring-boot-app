@@ -30,8 +30,6 @@ public class AuthServiceImpl implements AuthService {
                 loginRequest.getPassword()));
 
         User user = userService.findByUserName(loginRequest.getUsername());
-        log.warn(user.getUsername());
-        log.warn(user.getRolesSet().toString());
 
         jwtResponse.setId(user.getId());
         jwtResponse.setUsername(user.getUsername());
