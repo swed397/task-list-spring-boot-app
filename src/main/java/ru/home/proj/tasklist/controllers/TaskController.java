@@ -1,6 +1,7 @@
 package ru.home.proj.tasklist.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.home.proj.tasklist.dtos.TaskDto;
@@ -23,6 +24,7 @@ public class TaskController {
     private final TaskMapper taskMapper;
 
     @PutMapping
+    @PreAuthorize("@securityExpression(#dto.id)")
     public TaskDto update(@Validated(OnUpdate.class) @RequestBody TaskDto dto) {
         Task task = taskMapper.toEntity(dto);
         Task updateTask = taskService.save(task);
@@ -31,6 +33,7 @@ public class TaskController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public TaskDto getById(@PathVariable Long id) {
         Task task = taskService.get(id);
 
@@ -38,11 +41,13 @@ public class TaskController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteById(@PathVariable Long id) {
         taskService.deleteById(id);
     }
 
     @GetMapping("/{id}/tasks")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<TaskDto> getAllTasksByUserId(@PathVariable Long id) {
         List<Task> taskList = taskService.findAllByUserId(id);
 
@@ -50,6 +55,7 @@ public class TaskController {
     }
 
     @PostMapping("/{userId}/tasks")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public TaskDto createTask(@PathVariable Long userId, @Validated(OnCreate.class) TaskDto dto) {
 
         Task task = taskMapper.toEntity(dto);

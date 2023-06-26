@@ -10,4 +10,6 @@ public interface UserService extends Crud<User> {
     User findByUserName(String username);
 
     User registerNewUser(User user);
+
+    Boolean isTaskOwner(Long userId, Long taskId);
 }

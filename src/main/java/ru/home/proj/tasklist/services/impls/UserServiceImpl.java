@@ -10,6 +10,7 @@ import ru.home.proj.tasklist.entities.User;
 import ru.home.proj.tasklist.enums.RolesEnum;
 import ru.home.proj.tasklist.repos.UserRepository;
 import ru.home.proj.tasklist.services.RoleService;
+import ru.home.proj.tasklist.services.TaskService;
 import ru.home.proj.tasklist.services.UserService;
 
 import java.util.Set;
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
+    private final TaskService taskService;
 
     @Transactional
     @Override
@@ -71,5 +73,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return user;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean isTaskOwner(Long id, Long taskId) {
+        //ToDo Refactor
+        return get(id).getId().equals(taskService.get(taskId).getUserSet().stream()
+                .findFirst()
+                .orElseThrow(() -> new UsernameNotFoundException("No such user find"))
+                .getId());
     }
 }
