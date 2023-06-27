@@ -14,6 +14,8 @@ import ru.home.proj.tasklist.utils.validations.OnUpdate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.home.proj.tasklist.utils.Utils.getPrincipal;
+
 @RestController
 @RequestMapping("/tasks")
 @Validated
@@ -33,7 +35,7 @@ public class TaskController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@securityExpression(#dto.id)")
     public TaskDto getById(@PathVariable Long id) {
         Task task = taskService.get(id);
 
@@ -41,7 +43,7 @@ public class TaskController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@securityExpression(#dto.id)")
     public void deleteById(@PathVariable Long id) {
         taskService.deleteById(id);
     }
@@ -60,6 +62,22 @@ public class TaskController {
 
         Task task = taskMapper.toEntity(dto);
         Task createdTask = taskService.saveWithUserId(task, userId);
+
+        return taskMapper.toDto(createdTask);
+    }
+
+    @GetMapping("/tasks")
+    public List<TaskDto> getAllTasksByUserId() {
+        List<Task> taskList = taskService.findAllByUserId(getPrincipal().getId());
+
+        return taskList.stream().map(taskMapper::toDto).collect(Collectors.toList());
+    }
+
+    @PostMapping("/tasks")
+    public TaskDto createTask(@Validated(OnCreate.class) TaskDto dto) {
+
+        Task task = taskMapper.toEntity(dto);
+        Task createdTask = taskService.saveWithUserId(task, getPrincipal().getId());
 
         return taskMapper.toDto(createdTask);
     }
