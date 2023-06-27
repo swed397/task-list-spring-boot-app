@@ -1,6 +1,9 @@
 package ru.home.proj.tasklist.services.impls;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.home.proj.tasklist.entities.Task;
@@ -14,11 +17,12 @@ import ru.home.proj.tasklist.services.UserService;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
+    @Lazy
+    private UserService userService;
     private final TaskRepository taskRepository;
-    private final UserService userService;
     private final StatusService statusService;
 
     @Override
