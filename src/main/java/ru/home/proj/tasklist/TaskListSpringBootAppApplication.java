@@ -8,10 +8,6 @@ public class TaskListSpringBootAppApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(TaskListSpringBootAppApplication.class, args);
-
-//        ConfigurableApplicationContext context = SpringApplication.run(TaskListSpringBootAppApplication.class, args);
-//        var encoder = context.getBean("passwordEncoder", PasswordEncoder.class);
-//        System.out.println(encoder.encode("admin"));
     }
 
 }
