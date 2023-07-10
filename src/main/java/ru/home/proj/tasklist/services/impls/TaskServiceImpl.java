@@ -3,6 +3,10 @@ package ru.home.proj.tasklist.services.impls;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +30,7 @@ public class TaskServiceImpl implements TaskService {
     private final StatusService statusService;
 
     @Override
+    @CachePut(value = "TaskService::get", key = "#entity.id")
     @Transactional
     public Task save(Task entity) {
         if (entity.getStatus() == null) {
@@ -36,18 +41,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @CacheEvict(value = "TaskService::get", key = "#entity.id")
     @Transactional
     public void delete(Task entity) {
         taskRepository.delete(entity);
     }
 
     @Override
+    @Cacheable(value = "TaskService::get", key = "#id")
     @Transactional(readOnly = true)
     public Task get(Long id) {
         return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundExcept("User not found"));
     }
 
     @Override
+    @CacheEvict(value = "TaskService::get", key = "#id")
     @Transactional
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
@@ -60,6 +68,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Cacheable(value = "TaskService::get", key = "#task.id")
     @Transactional
     public Task saveWithUserId(Task task, Long userId) {
         if (task.getStatus() == null) {

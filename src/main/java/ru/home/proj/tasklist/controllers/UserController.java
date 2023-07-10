@@ -18,13 +18,19 @@ import ru.home.proj.tasklist.utils.validations.OnUpdate;
 public class UserController {
 
     private final UserService userService;
-    private final TaskService taskService;
 
-    private final TaskMapper taskMapper;
     private final UserMapper userMapper;
 
     @PutMapping
     public UserDto update(@Validated(OnUpdate.class) @RequestBody UserDto dto) {
+        User user = userMapper.toEntity(dto);
+        User updatedUser = userService.save(user);
+
+        return userMapper.toDto(updatedUser);
+    }
+
+    @PostMapping
+    public UserDto create(@Validated(OnUpdate.class) @RequestBody UserDto dto) {
         User user = userMapper.toEntity(dto);
         User updatedUser = userService.save(user);
 

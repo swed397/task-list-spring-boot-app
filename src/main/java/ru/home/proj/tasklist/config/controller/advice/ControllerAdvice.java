@@ -23,30 +23,40 @@ public class ControllerAdvice {
     @ExceptionHandler(ResourceNotFoundExcept.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionBody handlerResourceNotFound(ResourceNotFoundExcept e) {
+        e.printStackTrace();
+
         return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(ResourceMappingExcept.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handlerResourceMapping(ResourceMappingExcept e) {
+        e.printStackTrace();
+
         return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler(IllegalStateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleIllegalState(IllegalStateException e) {
+        e.printStackTrace();
+
         return new ExceptionBody(e.getMessage());
     }
 
     @ExceptionHandler({AccessDeniedExcept.class, AccessDeniedException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ExceptionBody handleAccessDenied(IllegalStateException e) {
+        e.printStackTrace();
+
         return new ExceptionBody("Access denied");
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleArgumentNotValid(MethodArgumentNotValidException e) {
+        e.printStackTrace();
+
         ExceptionBody exceptionBody = new ExceptionBody("Validation failed");
 
         List<FieldError> fieldErrorList = e.getBindingResult().getFieldErrors();
@@ -60,6 +70,8 @@ public class ControllerAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionBody handleConstraintViolation(ConstraintViolationException e) {
+        e.printStackTrace();
+
         ExceptionBody exceptionBody = new ExceptionBody("Validation failed");
 
         exceptionBody.setErrors(e.getConstraintViolations().stream()
@@ -74,6 +86,8 @@ public class ControllerAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionBody handleAllOtherException(Exception e) {
+        e.printStackTrace();
+
         return new ExceptionBody("Internal error");
     }
 }

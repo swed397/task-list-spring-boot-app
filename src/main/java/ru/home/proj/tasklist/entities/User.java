@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +28,6 @@ public class User {
     @Transient
     private String passwordConfirm;
 
-    //ToDo Посмотреть другие решения
-//    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
     @ManyToMany
     @JoinTable(
