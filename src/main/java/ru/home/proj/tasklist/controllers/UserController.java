@@ -5,9 +5,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.home.proj.tasklist.dtos.UserDto;
 import ru.home.proj.tasklist.entities.User;
-import ru.home.proj.tasklist.mappers.TaskMapper;
 import ru.home.proj.tasklist.mappers.UserMapper;
-import ru.home.proj.tasklist.services.TaskService;
 import ru.home.proj.tasklist.services.UserService;
 import ru.home.proj.tasklist.utils.validations.OnUpdate;
 
