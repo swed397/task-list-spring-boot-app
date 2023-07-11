@@ -17,6 +17,8 @@ import ru.home.proj.tasklist.properties.JwtProperties;
 import ru.home.proj.tasklist.services.UserService;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,13 +43,11 @@ public class JwtTokenProvider {
         claims.put("id", userId);
         claims.put("roles", roleSet.stream().map(Role::getRole).collect(Collectors.toList()));
 
-        Date dateNow = new Date();
-        Date dateValidity = new Date(dateNow.getTime() + jwtProperties.getAccess());
+        Instant dateValidity = Instant.now().plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(dateNow)
-                .setExpiration(dateValidity)
+                .setExpiration(Date.from(dateValidity))
                 .signWith(key)
                 .compact();
     }
@@ -56,13 +56,11 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("id", userId);
 
-        Date dateNow = new Date();
-        Date dateValidity = new Date(dateNow.getTime() + jwtProperties.getRefresh());
+        Instant dateValidity = Instant.now().plus(jwtProperties.getRefresh(), ChronoUnit.DAYS);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(dateNow)
-                .setExpiration(dateValidity)
+                .setExpiration(Date.from(dateValidity))
                 .signWith(key)
                 .compact();
     }

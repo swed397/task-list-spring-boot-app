@@ -1,17 +1,19 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   cache:
     type: redis
     cache-names: redis-cache
   data:
     redis:
-      host: localhost
+      host: ${REDIS_HOST}
       port: 6379
-      password: Mzk3MTE=
+      password: ${REDIS_PASSWORD}
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/taskList
-    username: postgres
-    password: 39711
+    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DATABASE}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: classpath:db/changelog/db.changelog.yaml
@@ -29,9 +31,9 @@ spring:
 
 security:
   jwt:
-    secret: bXkgand0IHRva2VuIG5ldmVyIGRlY29kZQ==
-    access: 3600000
-    refresh: 2592000000
+    secret: ${JWT_SECRET}
+    access: 1
+    refresh: 30
 
 server:
   servlet:
